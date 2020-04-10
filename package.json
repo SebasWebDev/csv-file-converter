@@ -2,7 +2,8 @@
   "name": "csv-file-converter",
   "version": "1.0.0",
   "description": "Converts CSV files to TXT, DOCX or individual CSV files",
-  "autor": "SebasWebDev <sebas@sebaswebdev.com>",
+  "author": "SebasWebDev <sebas@sebaswebdev.com>",
+  "repository": "https://github.com/SebasWebDev/csv-file-converter.git",
   "main": "index.js",
   "directories": {
     "lib": "lib"
@@ -16,7 +17,6 @@
     "ES7",
     "CSV"
   ],
-  "author": "Sebastian Lopez <sebastian.lopez@klm.com>",
   "license": "MIT",
   "dependencies": {
     "html-docx-js": "^0.3.1"
