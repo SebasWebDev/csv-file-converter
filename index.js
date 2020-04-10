@@ -1,9 +1,10 @@
-'use strinc';
+'use strict';
+
 const path = require('path');
 const convertCSV = require('./lib/csv-converter');
-
+const {CSVFileConverterOptions} = require('./lib/models');
 const optionsMap = {
-    'file-path': {
+    filePath: {
         type: 'string',
         params: ['-p', '--path']
     },
@@ -23,15 +24,13 @@ const optionsMap = {
     }
 };
 
-const defaults = {
-    split: false,
-    dest: './',
-    format: 'txt'
-};
-
 class CSVFileConverter {
     constructor(args) {
-        this.options = Object.assign({}, defaults);
+        /**
+         *
+         * @type {CSVFileConverterOptions}
+         */
+        this.options = new CSVFileConverterOptions();
         this.init(args);
     }
 
@@ -40,10 +39,17 @@ class CSVFileConverter {
         this.convertCSV();
     }
 
+    /**
+     *
+     * @param args
+     */
     formatArgs(args) {
         let isParam = false;
         let lastOption = '';
-        const options = {};
+        /**
+         *  @type {CSVFileConverterOptions}
+         */
+        const options = new CSVFileConverterOptions();
         if (args.length === 3 && args[2] === '--help') {
             this.displayHelp();
             return;
@@ -51,7 +57,7 @@ class CSVFileConverter {
             for (let i = 2; i < args.length; i++) {
                 // The first param if not param type, is the file path
                 if (i === 2 && args[i].charAt(0) !== '-') {
-                    options['file-path'] = args[i];
+                    options.filePath = args[i];
                 } else if (args[i].charAt(0) === '-' && !isParam) {
                     const key = Object.keys(optionsMap).find((param) => optionsMap[param].params.includes(args[i]));
                     if (!key) {
@@ -93,6 +99,10 @@ class CSVFileConverter {
         this.mergeOptions(options);
     }
 
+    /**
+     *
+     * @param options {CSVFileConverterOptions}
+     */
     mergeOptions(options) {
         Object.keys(options).forEach((opt) => {
             this.options[opt] = options[opt];
@@ -100,7 +110,7 @@ class CSVFileConverter {
     }
 
     convertCSV() {
-        if (this.options['file-path'].substr(-4).toLowerCase() !== '.csv') {
+        if (this.options.filePath.substr(-4).toLowerCase() !== '.csv') {
             throw TypeError('Incorrect source file format provided');
         }
 
